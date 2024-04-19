@@ -32,7 +32,37 @@ namespace Exam
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Book>().HasKey(x=>x.ISBN);
+            modelBuilder.Entity<Book>().HasKey(x=>x.Id);
+
+            modelBuilder.Entity<Book>().HasMany(x => x.Reviews)
+                                       .WithOne(x => x.Book);
+
+            modelBuilder.Entity<Book>().HasOne(x => x.Author)
+                                       .WithMany(x => x.Books);
+
+            modelBuilder.Entity<Book>().HasOne(x => x.Publisher)
+                                       .WithMany(x => x.Books);
+
+            modelBuilder.Entity<Book>().HasOne(x => x.Genre)
+                                       .WithMany(x => x.Books);
+
+            modelBuilder.Entity<Book>().HasMany(x => x.Orders)
+                                       .WithMany(x => x.Books);
+
+            modelBuilder.Entity<Users>().HasMany(x => x.Orders)
+                                        .WithOne(x => x.User);
+
+            modelBuilder.Entity<Users>().HasMany(x => x.Reviews)
+                                        .WithOne(x => x.User);
+            
+            modelBuilder.Entity<Book>().Property(x => x.ISBN).HasMaxLength(14);
+            modelBuilder.Entity<Book>().Property(x => x.Title).HasMaxLength(50);
+            modelBuilder.Entity<Book>().Property(x => x.Rating).HasMaxLength(2);
+
+            modelBuilder.Entity<Users>().Property(x=>x.Username).HasMaxLength(20);
+            modelBuilder.Entity<Users>().Property(x => x.Password).HasMaxLength(20);
+
+            modelBuilder.Entity<Orders>().Property(x=>x.OrderDate).HasDefaultValue(DateTime.Now.Date);
         }
 
         public DbSet<Book> Books { get; set; }
@@ -46,7 +76,8 @@ namespace Exam
 
     public class Book   
     {
-        public string ISBN { get; set; }
+        public int Id { get; set; } 
+        public int ISBN { get; set; }
         public string Title { get; set; }
         public int Stock { get; set; }
         public int Year { get; set; }
@@ -60,6 +91,7 @@ namespace Exam
         public Publisher Publisher { get; set; }
         public Genres Genre { get; set; }
         public ICollection<Review>? Reviews { get; set; }
+        public ICollection<Orders>? Orders { get; set; }
     }
 
     public class Author
@@ -111,13 +143,20 @@ namespace Exam
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice {
+            get
+            {
+                decimal a = 0;
+                foreach (var item in Books) {a += item.Price;}
+                return a;
+            }
+            set {} }
         public int Quantity { get; set; }   
 
         //////////////////////////////////////////////////////
 
         public ICollection<Book> Books { get; set; }
-
+        public Users User { get; set; }
     }
 
     public class Review
@@ -129,6 +168,7 @@ namespace Exam
         ///////////////////////////////////////////////////
 
         public Book Book { get; set; }
+        public Users User { get; set; } 
 
     }
 }

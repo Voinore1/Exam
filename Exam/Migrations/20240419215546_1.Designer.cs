@@ -4,6 +4,7 @@ using Exam;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exam.Migrations
 {
     [DbContext(typeof(BookShop))]
-    partial class BookShopModelSnapshot : ModelSnapshot
+    [Migration("20240419215546_1")]
+    partial class _1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,13 +27,13 @@ namespace Exam.Migrations
 
             modelBuilder.Entity("BookOrders", b =>
                 {
-                    b.Property<int>("BooksId")
-                        .HasColumnType("int");
+                    b.Property<string>("BooksISBN")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("OrdersId")
                         .HasColumnType("int");
 
-                    b.HasKey("BooksId", "OrdersId");
+                    b.HasKey("BooksISBN", "OrdersId");
 
                     b.HasIndex("OrdersId");
 
@@ -56,20 +59,13 @@ namespace Exam.Migrations
 
             modelBuilder.Entity("Exam.Book", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("ISBN")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ISBN")
-                        .HasMaxLength(14)
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -79,7 +75,6 @@ namespace Exam.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
-                        .HasMaxLength(2)
                         .HasColumnType("int");
 
                     b.Property<int>("Sheets")
@@ -90,13 +85,12 @@ namespace Exam.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ISBN");
 
                     b.HasIndex("AuthorId");
 
@@ -133,9 +127,7 @@ namespace Exam.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("OrderDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -178,8 +170,9 @@ namespace Exam.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
+                    b.Property<string>("BookISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -193,7 +186,7 @@ namespace Exam.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookISBN");
 
                     b.HasIndex("UserId");
 
@@ -213,13 +206,11 @@ namespace Exam.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -230,7 +221,7 @@ namespace Exam.Migrations
                 {
                     b.HasOne("Exam.Book", null)
                         .WithMany()
-                        .HasForeignKey("BooksId")
+                        .HasForeignKey("BooksISBN")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -283,7 +274,7 @@ namespace Exam.Migrations
                 {
                     b.HasOne("Exam.Book", "Book")
                         .WithMany("Reviews")
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("BookISBN")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
