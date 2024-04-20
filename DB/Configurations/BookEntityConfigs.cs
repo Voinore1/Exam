@@ -36,6 +36,8 @@ namespace Exam.Data.Configurations
             builder.Property(x => x.Rating).HasMaxLength(2);
 
             builder.HasAlternateKey(x => x.ISBN);
+
+            builder.Ignore(x => x.Rating);
         }
     }
 }

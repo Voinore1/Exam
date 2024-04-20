@@ -8,10 +8,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  
-
-  <ItemGroup>
-    <ProjectReference Include="..\DB\DB.csproj" />
-  </ItemGroup>
-
 </Project>

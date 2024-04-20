@@ -8,8 +8,12 @@
         public int Stock { get; set; }
         public int Year { get; set; }
         public decimal Price { get; set; }
-        public int Rating { get; set; }
+        public int Rating
+        {
+            get { int a = 0; foreach (var item in Reviews) { a += item.Rating; } return a / Reviews.Count; }
+        }
         public int Sheets { get; set; }
+        public string Description { get; set; } 
 
         /////////////////////
 

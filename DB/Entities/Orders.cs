@@ -12,7 +12,6 @@
                 foreach (var item in Books) { a += item.Price; }
                 return a;
             }
-            set { }
         }
 
         //////////////////////////////////////////////////////
