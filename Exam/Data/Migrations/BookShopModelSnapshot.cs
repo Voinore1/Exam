@@ -98,6 +98,8 @@ namespace Exam.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("ISBN");
+
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("GenreId");
@@ -117,9 +119,11 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Genres");
                 });
@@ -136,9 +140,6 @@ namespace Exam.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValue(new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Local));
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -163,9 +164,11 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Publishers");
                 });
@@ -222,6 +225,8 @@ namespace Exam.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Username");
 
                     b.ToTable("Users");
                 });
