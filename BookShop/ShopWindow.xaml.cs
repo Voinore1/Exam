@@ -20,11 +20,15 @@ namespace bookShop
     public partial class ShopWindow : Window
     {
         ViewModel viewModel;
-        public ShopWindow(ViewModel viewModel)
+        public ShopWindow()
         {
             InitializeComponent();
-            this.viewModel = viewModel;
-            this.DataContext = viewModel;
+            //this.DataContext = viewModel;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

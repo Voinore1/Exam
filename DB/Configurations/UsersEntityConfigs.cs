@@ -20,7 +20,6 @@ namespace Exam.Data.Configurations
 
             builder.Property(x => x.Username).HasMaxLength(20);
             builder.Property(x => x.Password).HasMaxLength(20);
-            builder.Property(x => x.IsAdmin).HasDefaultValue(false);
 
             builder.HasAlternateKey(x => x.Username);
 

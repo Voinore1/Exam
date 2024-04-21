@@ -5,21 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bookShop"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
-        Title="ShopWindow" Height="450" Width="800">
+            Title="Book Shop" Height="300" Width="400">
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="72*"/>
+            <RowDefinition Height="85*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="90"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
-        <StackPanel>
-            <Label Content="Search:"/>
-            <RadioButton Content="Authors"/>
-            <RadioButton Content="Books"/>
-        </StackPanel>
-        <ListBox Name="ItemListBox">
-            
-        </ListBox>
+
+        <Label Grid.Column="0" Grid.ColumnSpan="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" >Login</Label>
+
+        <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Height="26" Grid.RowSpan="2" Width="66" >Username:</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.RowSpan="2"></TextBox>
+        <Button Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Gray" Content="Doesn't have account?" BorderThickness="0" Background="Transparent"></Button>
+
+        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Height="26" Grid.RowSpan="2" Width="66" >Password:</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.RowSpan="2"></TextBox>
+        <TextBlock Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red"></TextBlock>
+        <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Background="LightSlateGray" Margin="5" Click="Button_Click">Login</Button>
+
+
     </Grid>
 </Window>
