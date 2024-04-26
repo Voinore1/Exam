@@ -4,19 +4,16 @@ using Exam.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Exam.Migrations
+namespace DB.Migrations
 {
     [DbContext(typeof(BookShopDB))]
-    [Migration("20240419192427_Initial")]
-    partial class Initial
+    partial class BookShopDBModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,22 @@ namespace Exam.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Exam.Author", b =>
+            modelBuilder.Entity("BookOrders", b =>
+                {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("BookOrders");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,27 +54,38 @@ namespace Exam.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
                 {
-                    b.Property<string>("ISBN")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrdersId")
-                        .HasColumnType("int");
+                    b.Property<long>("ISBN")
+                        .HasMaxLength(14)
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("PublishedYear")
+                        .HasColumnType("int");
+
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("Sheets")
                         .HasColumnType("int");
 
                     b.Property<int>("Stock")
@@ -70,25 +93,23 @@ namespace Exam.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ISBN");
+                    b.HasAlternateKey("ISBN");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("GenreId");
-
-                    b.HasIndex("OrdersId");
 
                     b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Exam.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,14 +119,43 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Name");
+
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Fantasy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Science Fiction"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Adventure"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Romance"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Thriller"
+                        });
                 });
 
-            modelBuilder.Entity("Exam.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,25 +164,21 @@ namespace Exam.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local));
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("UsersId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Exam.Publisher", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Publisher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,14 +188,16 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("Exam.Review", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,9 +205,8 @@ namespace Exam.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BookISBN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -168,19 +215,19 @@ namespace Exam.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsersId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookISBN");
+                    b.HasIndex("BookId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -193,36 +240,60 @@ namespace Exam.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Username");
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsAdmin = true,
+                            Password = "1",
+                            Username = "voinore1"
+                        });
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("BookOrders", b =>
                 {
-                    b.HasOne("Exam.Author", "Author")
+                    b.HasOne("Exam.Data.Entities.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exam.Data.Entities.Orders", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Genres", "Genre")
+                    b.HasOne("Exam.Data.Entities.Genres", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Orders", null)
-                        .WithMany("Books")
-                        .HasForeignKey("OrdersId");
-
-                    b.HasOne("Exam.Publisher", "Publisher")
+                    b.HasOne("Exam.Data.Entities.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -235,54 +306,57 @@ namespace Exam.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Exam.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
                 {
-                    b.HasOne("Exam.Users", null)
+                    b.HasOne("Exam.Data.Entities.Users", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UsersId");
-                });
-
-            modelBuilder.Entity("Exam.Review", b =>
-                {
-                    b.HasOne("Exam.Book", "Book")
-                        .WithMany("Reviews")
-                        .HasForeignKey("BookISBN")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Users", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("UsersId");
-
-                    b.Navigation("Book");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Exam.Author", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Review", b =>
+                {
+                    b.HasOne("Exam.Data.Entities.Book", "Book")
+                        .WithMany("Reviews")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exam.Data.Entities.Users", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Exam.Data.Entities.Author", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
                 {
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Publisher", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Publisher", b =>
-                {
-                    b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("Exam.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
                 {
                     b.Navigation("Orders");
 

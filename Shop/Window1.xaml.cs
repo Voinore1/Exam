@@ -23,5 +23,11 @@ namespace Shop
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+                Uri uri = new Uri("Page1.xaml", UriKind.Relative);
+                this.mainFrame.Navigate(uri);
+        }
     }
 }

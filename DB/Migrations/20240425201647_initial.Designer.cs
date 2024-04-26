@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Exam.Migrations
+namespace DB.Migrations
 {
     [DbContext(typeof(BookShopDB))]
-    [Migration("20240420152614_5")]
-    partial class _5
+    [Migration("20240425201647_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace Exam.Migrations
                     b.ToTable("BookOrders");
                 });
 
-            modelBuilder.Entity("Exam.Author", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace Exam.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,19 +68,24 @@ namespace Exam.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ISBN")
-                        .HasColumnType("int");
+                    b.Property<long>("ISBN")
+                        .HasMaxLength(14)
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("PublisherId")
+                    b.Property<int>("PublishedYear")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
                     b.Property<int>("Sheets")
@@ -91,12 +96,12 @@ namespace Exam.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("ISBN");
 
                     b.HasIndex("AuthorId");
 
@@ -107,7 +112,7 @@ namespace Exam.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Exam.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,14 +122,43 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Name");
+
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Fantasy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Science Fiction"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Adventure"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Romance"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Thriller"
+                        });
                 });
 
-            modelBuilder.Entity("Exam.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,10 +169,7 @@ namespace Exam.Migrations
                     b.Property<DateTime>("OrderDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 20, 0, 0, 0, 0, DateTimeKind.Local));
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasDefaultValue(new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -150,7 +181,7 @@ namespace Exam.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Exam.Publisher", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Publisher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,14 +191,16 @@ namespace Exam.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("Exam.Review", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +230,7 @@ namespace Exam.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -220,39 +253,50 @@ namespace Exam.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Username");
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsAdmin = true,
+                            Password = "1",
+                            Username = "voinore1"
+                        });
                 });
 
             modelBuilder.Entity("BookOrders", b =>
                 {
-                    b.HasOne("Exam.Book", null)
+                    b.HasOne("Exam.Data.Entities.Book", null)
                         .WithMany()
                         .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Orders", null)
+                    b.HasOne("Exam.Data.Entities.Orders", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
                 {
-                    b.HasOne("Exam.Author", "Author")
+                    b.HasOne("Exam.Data.Entities.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Genres", "Genre")
+                    b.HasOne("Exam.Data.Entities.Genres", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Publisher", "Publisher")
+                    b.HasOne("Exam.Data.Entities.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -265,9 +309,9 @@ namespace Exam.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Exam.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
                 {
-                    b.HasOne("Exam.Users", "User")
+                    b.HasOne("Exam.Data.Entities.Users", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,15 +320,15 @@ namespace Exam.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Exam.Review", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Review", b =>
                 {
-                    b.HasOne("Exam.Book", "Book")
+                    b.HasOne("Exam.Data.Entities.Book", "Book")
                         .WithMany("Reviews")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Users", "User")
+                    b.HasOne("Exam.Data.Entities.Users", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -295,27 +339,27 @@ namespace Exam.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Exam.Author", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Author", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Book", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Book", b =>
                 {
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Publisher", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Publisher", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
                 {
                     b.Navigation("Orders");
 
