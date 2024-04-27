@@ -13,10 +13,12 @@
                 return a;
             }
         }
+        public int UserId { get; set; } 
 
         //////////////////////////////////////////////////////
 
         public ICollection<Book> Books { get; set; }
-        public Users User { get; set; }
+        public Users Userss { get; set; }
+
     }
 }

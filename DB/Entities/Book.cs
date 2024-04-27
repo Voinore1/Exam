@@ -10,12 +10,14 @@
         public decimal Price { get; set; }
         public int Rating
         {
-            get { int a = 0; foreach (var item in Reviews) { a += item.Rating; } return a / Reviews.Count; }
+            get { int a = 0;if (Reviews.Count > 0) { foreach (var item in Reviews) { a += item.Rating; } return a / Reviews.Count; } else return 0; }
         }
         public int Sheets { get; set; }
         public string Description { get; set; }
-
-        /////////////////////
+        public int AuthorId { get; set; }
+        public int PublisherId { get; set; }
+        public int GenreId { get; set; }    
+        ////////////////////
         public Author Author { get; set; }
         public Publisher Publisher { get; set; }
         public Genres Genre { get; set; }
@@ -23,7 +25,8 @@
         public ICollection<Orders>? Orders { get; set; }
         public override string ToString()
         {
-            return $"{Title} by {Author.Name} ISBN: {ISBN}";
+            return $"{Title} ${Price}";
         }
+
     }
 }

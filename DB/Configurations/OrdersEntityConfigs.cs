@@ -16,6 +16,7 @@ namespace Exam.Data.Configurations
         {
             builder.Ignore(x => x.TotalPrice);
             builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now.Date);
+
         }
     }
 }

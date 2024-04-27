@@ -37,7 +37,7 @@ namespace Shop
                 user.username = u.Username;
                 user.password = u.Password;
                 Error_TB.Text = "";
-                Window1 w = new();
+                Window1 w = new((Users)u);
                 w.Show();
                 this.Close();
             }
@@ -58,7 +58,7 @@ namespace Shop
                 user.username = u.Username;
                 user.password = u.Password;
                 Error_TB.Text = "";
-                Window1 w = new();
+                Window1 w = new((Users)u);
                 w.Show();
                 this.Close();
             

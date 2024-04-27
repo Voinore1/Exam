@@ -11,5 +11,6 @@
 
         public ICollection<Orders>? Orders { get; set; }
         public ICollection<Review>? Reviews { get; set; }
+
     }
 }

@@ -17,16 +17,20 @@ namespace Exam.Data.Configurations
             builder.HasKey(x => x.Id);
 
             builder.HasMany(x => x.Reviews)
-                   .WithOne(x => x.Book);
+                   .WithOne(x => x.Book)
+                   .HasForeignKey(x => x.BookId);
 
             builder.HasOne(x => x.Author)
-                   .WithMany(x => x.Books);
+                   .WithMany(x => x.Books)
+                   .HasForeignKey(x => x.AuthorId);
 
             builder.HasOne(x => x.Publisher)
-                   .WithMany(x => x.Books);
+                   .WithMany(x => x.Books)
+                   .HasForeignKey(x => x.PublisherId);
 
             builder.HasOne(x => x.Genre)
-                   .WithMany(x => x.Books);
+                   .WithMany(x => x.Books)
+                   .HasForeignKey(x => x.GenreId);
 
             builder.HasMany(x => x.Orders)
                    .WithMany(x => x.Books);

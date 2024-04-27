@@ -26,10 +26,13 @@ namespace Shop
     /// </summary>
     public partial class Page1 : Page
     {
-        ViewModel vm = new();
-        public Page1()
-        {
+        ViewModel vm;
+        Users u;
+        public Page1(Users u)
+        {   
+            this.u = u;
             InitializeComponent();
+            vm = new ViewModel(u);
             this.DataContext = vm;
         }
 
@@ -39,26 +42,58 @@ namespace Shop
     {
         private BookShopDB bookDB = new BookShopDB();
         private List<Book> books;
+        private List<Orders> orders;
+        private List<Book> orderedBooks = new();
+        private Users u;
 
         private RelayCommand sortAuthor;
         private RelayCommand sortName;
         private RelayCommand sortISBN;
         private RelayCommand sortGenre;
-        public ViewModel()
+        private RelayCommand addBook;
+        private RelayCommand showReview;
+        private RelayCommand cancelOrder;
+        private RelayCommand acceptOrder;
+        public ViewModel(Users u)
         {
+            this.u = u;
             books = bookDB.Books.Include(x=>x.Author).Include(x=>x.Publisher).Include(x=>x.Genre).Include(x=>x.Reviews).ToList();
+            orders = bookDB.Orders.ToList();
             SelBook = books[0];
+
             sortAuthor = new RelayCommand((o)=>sortAu(), (o)=>true);
+            sortName = new RelayCommand((o) => sortbyName(), (o) => true);
+            sortISBN = new RelayCommand((o) => sortbyISBN(), (o) => true);
+            sortGenre = new RelayCommand((o) => sortGe(), (o) => true);
+            addBook = new RelayCommand((o) => addToOrderBook(), (o) => SelBook != null);
+            showReview = new RelayCommand((o) => showReviews(), (o) => SelBook != null);
+            cancelOrder = new RelayCommand((o) => clearOrder(), (o) => orderedBooks.Any());
+            acceptOrder = new RelayCommand((o) => acceptOrders(), (o) => orderedBooks.Any());
         }
 
         public ICollection<Book> Books => books;
+        public ICollection<Book> OrderedBooks => orderedBooks;
         public Book SelBook { get; set; }
+        public string TotalCost
+        {
+            get
+            {
+                return orderedBooks.Count == 0 ? "Total price: 0" : $"Total price: ${OrderedBooks.Sum(x=>x.Price)}";
+            } 
+        }
+
+        public RelayCommand CancelOrder => cancelOrder;
+        public RelayCommand AddToOrderBook => addBook;
+        public RelayCommand ShowReviews => showReview;
+        public RelayCommand AcceptOrder => acceptOrder;
+
+        #region SelectedBookBindings
+        /// commands
         public RelayCommand sortAuCmd => sortAuthor;
         public RelayCommand sortGeCmd => sortGenre;
         public RelayCommand sortISBNCmd => sortISBN;
         public RelayCommand sortNameCmd => sortName;
 
-        #region SelectedBookBindings
         public string SelBookPublished
         {
             get
@@ -101,8 +136,6 @@ namespace Shop
                 return SelBook == null ? "" : $"Description: {SelBook.Description}";
             }
         }
-        #endregion
-
         public void sortAu()
         {
             books = books.OrderBy(x => x.Author).ToList();
@@ -118,6 +151,28 @@ namespace Shop
         public void sortbyISBN()
         {
             books = books.OrderBy(x => x.ISBN).ToList();
+        }
+        #endregion
+
+        public void acceptOrders()
+        {
+            Orders o = new Orders() { Books = orderedBooks, Userss = u, UserId = u.Id };
+            bookDB.Orders.Add(o);
+            bookDB.SaveChanges();
+            orderedBooks.Clear();
+        }
+        public void clearOrder()
+        {
+            orderedBooks.Clear();
+        }
+        public void showReviews()
+        { 
+            Window2 w = new Window2(SelBook.Id);
+            w.Show();
+        }
+        public void addToOrderBook()
+        {
+            orderedBooks.Add(SelBook);
         }
 
     }

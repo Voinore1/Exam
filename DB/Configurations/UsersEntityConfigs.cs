@@ -14,9 +14,13 @@ namespace Exam.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Users> builder)
         {
-            builder.HasMany(x => x.Orders).WithOne(x => x.User);
+            builder.HasMany(x => x.Orders)
+                   .WithOne(x => x.Userss)
+                   .HasForeignKey(x => x.UserId);
 
-            builder.HasMany(x => x.Reviews).WithOne(x => x.User);
+            builder.HasMany(x => x.Reviews)
+                   .WithOne(x => x.User)
+                   .HasForeignKey(x => x.UserId);
 
             builder.Property(x => x.Username).HasMaxLength(20);
             builder.Property(x => x.Password).HasMaxLength(20);

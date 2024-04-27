@@ -16,22 +16,16 @@ using System.Windows.Shapes;
 namespace Shop
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for Window2.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class Window2 : Window
     {
-        Users u;
-        public Window1(Users u)
+        int bookId;
+        public Window2(int b)
         {
             InitializeComponent();
-            this.u = u;
+            bookId = b;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Page1 page = new(u);
-            this.mainFrame.Navigate(page);
-        }
-        
     }
 }
