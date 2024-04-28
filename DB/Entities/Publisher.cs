@@ -1,5 +1,8 @@
-﻿namespace Exam.Data.Entities
+﻿using PropertyChanged;
+
+namespace Exam.Data.Entities
 {
+    [AddINotifyPropertyChangedInterface]
     public class Publisher
     {
         public int Id { get; set; }

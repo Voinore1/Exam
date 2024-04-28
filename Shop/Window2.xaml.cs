@@ -1,4 +1,5 @@
-﻿using Exam.Data.Entities;
+﻿using Exam.Data;
+using Exam.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace Shop
     /// </summary>
     public partial class Window2 : Window
     {
-        int bookId;
-        public Window2(int b)
+        public Window2(ViewModel vm)
         {
             InitializeComponent();
-            bookId = b;
+            this.DataContext = vm;
         }
+
 
     }
 }
