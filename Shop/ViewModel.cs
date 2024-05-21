@@ -2,7 +2,10 @@
 using Exam.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using PropertyChanged;
+using ReactiveUI;
+using System.Collections.ObjectModel;
 using System.Net;
+using System.Reactive.Linq;
 
 namespace Shop
 {
@@ -10,21 +13,36 @@ namespace Shop
     public class ViewModel
     {
         private BookShopDB bookDB = new BookShopDB();
-        private List<Book> books;
-        private List<Orders> orders;
-        private List<Book> orderedBooks = new();
-        private Users u;
+        private ObservableCollection<Book> books;
+        private ObservableCollection<Orders> orders;
+        private ObservableCollection<Book> orderedBooks = new();
+        private ObservableCollection<Orders> myReviews = new();
+        private User u;
 
         private RelayCommand addBook;
         private RelayCommand showReview;
         private RelayCommand cancelOrder;
         private RelayCommand acceptOrder;
 
-        public ViewModel(Users u)
+        public ViewModel(User u)
         {
             this.u = u;
-            books = bookDB.Books.Include(x=>x.Author).Include(x=>x.Publisher).Include(x=>x.Genre).Include(x=>x.Reviews).ToList();
-            orders = bookDB.Orders.ToList();
+
+            books = new ObservableCollection<Book>( bookDB.Books
+                .Include(x => x.Author)
+                .Include(x => x.Publisher)
+                .Include(x => x.Genre)
+                .Include(x => x.Reviews)
+                .ToList());
+
+            myReviews = new ObservableCollection<Orders> (bookDB.Orders.Where(x => x.UserId == u.Id)
+                .Include(x => x.Books)
+                .ToList());
+
+            orders = new ObservableCollection<Orders>(bookDB.Orders.Where(x => x.UserId == u.Id)
+                .Include(x => x.Books)
+                .ToList());
+
             SelBook = books[0];
 
             addBook = new RelayCommand((o) => addToOrderBook(), (o) => SelBook != null);
@@ -34,16 +52,19 @@ namespace Shop
         }
 
         public ICollection<Book> Books => books;
+        public ICollection<Orders> MyOrders => orders;
         public ICollection<Book> OrderedBooks => orderedBooks;
-        public ICollection<Review> SelBookReviews => bookDB.Reviews.Where(x => x.BookId == SelBook.Id).ToList();
+        public ICollection<Orders> CurReviews => myReviews;
+        public ICollection<Review> SelBookReviews => bookDB.Reviews.Where(x => x.BookId == SelBook.Id).Include(x => x.User).ToList();
         public Book SelBook { get; set; }
         public string TotalCost
         {
             get
             {
-                return orderedBooks.Count == 0 ? "Total price: 0" : $"Total price: ${OrderedBooks.Sum(x=>x.Price)}";
+                return orderedBooks.Count == 0 ? "Total price: $0" : $"Total price: ${OrderedBooks.Sum(x=>x.Price)}";
             } 
         }
+        
 
         public RelayCommand CancelOrder => cancelOrder;
         public RelayCommand AddToOrderBook => addBook;
@@ -113,7 +134,7 @@ namespace Shop
         }
         public void showReviews()
         { 
-            Window2 w = new Window2(this);
+            Window2 w = new(this);
             w.Show();
             
         }

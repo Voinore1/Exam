@@ -25,7 +25,7 @@ namespace Shop
         }
 
         private BookShopDB bookShopDB = new();
-        private User user = new();
+        private MyUser user = new();
 
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -37,14 +37,14 @@ namespace Shop
                 user.username = u.Username;
                 user.password = u.Password;
                 Error_TB.Text = "";
-                Window1 w = new((Users)u);
+                Window1 w = new((Exam.Data.Entities.User)u);
                 w.Show();
                 this.Close();
             }
         }
         private void Reg_Click(object sender, RoutedEventArgs e)
         {
-            var u = new Users() { Username = Username_TB.Text, Password = Password_TB.Text, IsAdmin = false};
+            var u = new Exam.Data.Entities.User() { Username = Username_TB.Text, Password = Password_TB.Text, IsAdmin = false};
             try
             {
                 bookShopDB.Users.Add(u);
@@ -58,7 +58,7 @@ namespace Shop
                 user.username = u.Username;
                 user.password = u.Password;
                 Error_TB.Text = "";
-                Window1 w = new((Users)u);
+            Window1 w = new((Exam.Data.Entities.User)u);
                 w.Show();
                 this.Close();
             
@@ -88,7 +88,7 @@ namespace Shop
         }
     }
 
-    public class User
+    public class MyUser
     {
         public string username { get; set; }
         public string password { get; set; }

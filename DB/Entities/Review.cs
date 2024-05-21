@@ -9,12 +9,20 @@ namespace Exam.Data.Entities
         public string Reviews { get; set; }
         public int Rating { get; set; }
         public int BookId { get; set; }
-        public int UserId { get; set; } 
+        public int UserId { get; set; }
+        public string RatingStr
+        { 
+            get 
+            {
+                if (Reviews == null) { return $"Rating: N/A"; }
+                else { return $"Rating: {Rating}/5"; }
+            } 
+        }
 
         ///////////////////////////////////////////////////
 
         public Book Book { get; set; }
-        public Users User { get; set; }
+        public User User { get; set; }
 
     }
 }

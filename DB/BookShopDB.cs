@@ -30,7 +30,7 @@ namespace Exam.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Genres> Genres { get; set; }
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<Review> Reviews { get; set; }
     }

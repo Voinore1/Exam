@@ -5,25 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shop"
         mc:Ignorable="d"
-        Title="Window2" Height="450" Width="800"
-        d:DataContext="{d:DesignInstance Type=local:ViewModel}">
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
+        Title="Window2" Height="450" Width="800">
     <ListBox ItemsSource="{Binding SelBookReviews}">
-        <DataTemplate>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="{Binding User.Username}"></Label>
-                <Label Grid.Row="0" Grid.Column="1" Content="{Binding Book.Title}"></Label>
-                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Rating}"></Label>
-                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Content="{Binding Reviews}"></Label>
-            </Grid>
-        </DataTemplate>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding User.Username}"></Label>
+                    <Label Grid.Row="0" Grid.Column="1" Content="{Binding Rating}"></Label>
+                    <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Reviews}"></Label>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
     </ListBox>
 </Window>

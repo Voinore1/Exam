@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="ReactiveUI" Version="19.6.12" />
   </ItemGroup>
 
   <ItemGroup>

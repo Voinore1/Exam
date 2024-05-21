@@ -26,8 +26,8 @@
         </Grid.ColumnDefinitions>
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
             <Button Style="{StaticResource mainBtn}" Click="Button_Click">Books</Button>
-            <Button Style="{StaticResource mainBtn}">Books</Button>
-            <Button Style="{StaticResource mainBtn}">My reviews</Button>
+            <Button Style="{StaticResource mainBtn}" Click="Button_Click_1">My reviews</Button>
+            <Button Style="{StaticResource mainBtn}">Profile</Button>
         </WrapPanel>
         <Frame x:Name="mainFrame" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
             

@@ -21,7 +21,7 @@ namespace Exam.Data.Entities
         //////////////////////////////////////////////////////
 
         public ICollection<Book> Books { get; set; }
-        public Users Userss { get; set; }
+        public User User { get; set; }
 
     }
 }

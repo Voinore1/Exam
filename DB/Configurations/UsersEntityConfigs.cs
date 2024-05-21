@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Exam.Data.Configurations
 {
-    internal class UsersEntityConfigs : IEntityTypeConfiguration<Users>
+    internal class UsersEntityConfigs : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Users> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasMany(x => x.Orders)
-                   .WithOne(x => x.Userss)
+                   .WithOne(x => x.User)
                    .HasForeignKey(x => x.UserId);
 
             builder.HasMany(x => x.Reviews)

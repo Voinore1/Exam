@@ -20,8 +20,8 @@ namespace Shop
     /// </summary>
     public partial class Window1 : Window
     {
-        Users u;
-        public Window1(Users u)
+        Exam.Data.Entities.User u;
+        public Window1(Exam.Data.Entities.User u)
         {
             InitializeComponent();
             this.u = u;
@@ -32,6 +32,11 @@ namespace Shop
             Page1 page = new(u);
             this.mainFrame.Navigate(page);
         }
-        
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Page2 p = new(u);
+            this.mainFrame.Navigate(p);
+        }
     }
 }

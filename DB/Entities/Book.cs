@@ -19,7 +19,7 @@ namespace Exam.Data.Entities
         public string Description { get; set; }
         public int AuthorId { get; set; }
         public int PublisherId { get; set; }
-        public int GenreId { get; set; }    
+        public int GenreId { get; set; }
         ////////////////////
         public Author Author { get; set; }
         public Publisher Publisher { get; set; }
