@@ -13,7 +13,19 @@ namespace Exam.Data.Entities
         public decimal Price { get; set; }
         public int Rating
         {
-            get { int a = 0;if (Reviews.Count > 0) { foreach (var item in Reviews) { a += item.Rating; } return a / Reviews.Count; } else return 0; }
+            get
+            {
+                int a = 0;
+                if (Reviews != null)
+                { 
+                    foreach (var item in Reviews)
+                    { 
+                        a += item.Rating.Value;
+                    }
+                    return a / Reviews.Count; 
+                } 
+                else return 0;
+            }
         }
         public int Sheets { get; set; }
         public string Description { get; set; }
@@ -24,6 +36,7 @@ namespace Exam.Data.Entities
         public Author Author { get; set; }
         public Publisher Publisher { get; set; }
         public Genres Genre { get; set; }
+        public Review MyReview { get; set; }
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Orders>? Orders { get; set; }
         public override string ToString()

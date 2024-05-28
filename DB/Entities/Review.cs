@@ -7,14 +7,14 @@ namespace Exam.Data.Entities
     {
         public int Id { get; set; }
         public string Reviews { get; set; }
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
         public int BookId { get; set; }
         public int UserId { get; set; }
         public string RatingStr
         { 
             get 
             {
-                if (Reviews == null) { return $"Rating: N/A"; }
+                if (Rating == null) { return $"Rating: N/A"; }
                 else { return $"Rating: {Rating}/5"; }
             } 
         }

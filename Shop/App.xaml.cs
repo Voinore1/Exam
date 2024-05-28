@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Reflection;
 using System.Windows;
 
 namespace Shop

@@ -42,6 +42,7 @@ namespace Exam.Data.Configurations
             builder.HasAlternateKey(x => x.ISBN);
 
             builder.Ignore(x => x.Rating);
+            builder.Ignore(x => x.MyReview);
         }
     }
 }
