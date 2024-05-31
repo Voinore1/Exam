@@ -3,7 +3,7 @@
 namespace Exam.Data.Entities
 {
     [AddINotifyPropertyChangedInterface]
-    public class Orders
+    public class Order
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }

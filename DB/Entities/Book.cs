@@ -35,10 +35,10 @@ namespace Exam.Data.Entities
         ////////////////////
         public Author Author { get; set; }
         public Publisher Publisher { get; set; }
-        public Genres Genre { get; set; }
-        public Review MyReview { get; set; }
+        public Genre Genre { get; set; }
+        public Review? MyReview { get; set; }
         public ICollection<Review>? Reviews { get; set; }
-        public ICollection<Orders>? Orders { get; set; }
+        public ICollection<Order>? Orders { get; set; }
         public override string ToString()
         {
             return $"{Title} ${Price}";

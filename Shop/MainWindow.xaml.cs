@@ -1,16 +1,5 @@
 ﻿using Exam.Data;
-using Exam.Data.Entities;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Shop
 {
@@ -31,7 +20,7 @@ namespace Shop
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             var u = bookShopDB.Users.FirstOrDefault(x => x.Username == Username_TB.Text);
-            if (u == null || u.Password != Password_TB.Text) { Error_TB.Text = "Password or username are incorect!"; }
+            if (u == null || u.Password != Password_TB.Password) { Error_TB.Text = "Password or username are incorect!"; }
             else
             {
                 user.username = u.Username;
@@ -44,7 +33,7 @@ namespace Shop
         }
         private void Reg_Click(object sender, RoutedEventArgs e)
         {
-            var u = new Exam.Data.Entities.User() { Username = Username_TB.Text, Password = Password_TB.Text, IsAdmin = false};
+            var u = new Exam.Data.Entities.User() { Username = Username_TB.Text, Password = Password_TB.Password, IsAdmin = false};
             try
             {
                 bookShopDB.Users.Add(u);

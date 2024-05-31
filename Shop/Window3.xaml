@@ -1,0 +1,31 @@
+﻿<Window x:Class="Shop.Window3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shop"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
+        Title="Window3" Height="300" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding SelOrderedBook.Title}" HorizontalAlignment="Center" FontWeight="Bold" Grid.Row="0"/>
+        <WrapPanel Grid.Row="1">
+            <TextBlock Margin="2">Rating: </TextBlock>
+            <TextBox Margin="2" MinWidth="100" Text="{Binding SelOrderedBook.MyReview.Rating}"></TextBox>
+        </WrapPanel>
+        <WrapPanel Grid.Row="2">
+            <TextBlock Margin="2">Review: </TextBlock>
+            <TextBox MinHeight="50" MinWidth="100" Margin="2" Text="{Binding SelOrderedBook.MyReview.Text}"></TextBox>
+        </WrapPanel>
+        <WrapPanel Grid.Row="3" VerticalAlignment="Bottom">
+            <Button Click="Button_Click" Margin="2">Cancel</Button>
+            <Button Command="{Binding AcceptChanges}" Margin="2">Save changes</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

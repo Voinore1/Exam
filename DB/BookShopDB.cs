@@ -12,7 +12,7 @@ namespace Exam.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            string str = "Data Source=DESKTOP-16BU9SR\\SQLEXPRESS;Initial Catalog=BookShop;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            string str = "Data Source=DESKTOP-16BU9SR\\SQLEXPRESS;Initial Catalog=BookShop1;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
             optionsBuilder.UseSqlServer(str);
         }
@@ -29,9 +29,9 @@ namespace Exam.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
-        public DbSet<Genres> Genres { get; set; }
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Orders> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Review> Reviews { get; set; }
     }
 }

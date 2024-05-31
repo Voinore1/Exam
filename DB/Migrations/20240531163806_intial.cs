@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DB.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Intial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -117,7 +117,7 @@ namespace DB.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 4, 25, 0, 0, 0, 0, DateTimeKind.Local)),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Local)),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -137,8 +137,8 @@ namespace DB.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Reviews = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: true),
                     BookId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -160,7 +160,7 @@ namespace DB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookOrders",
+                name: "BookOrder",
                 columns: table => new
                 {
                     BooksId = table.Column<int>(type: "int", nullable: false),
@@ -168,15 +168,15 @@ namespace DB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookOrders", x => new { x.BooksId, x.OrdersId });
+                    table.PrimaryKey("PK_BookOrder", x => new { x.BooksId, x.OrdersId });
                     table.ForeignKey(
-                        name: "FK_BookOrders_Books_BooksId",
+                        name: "FK_BookOrder_Books_BooksId",
                         column: x => x.BooksId,
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookOrders_Orders_OrdersId",
+                        name: "FK_BookOrder_Orders_OrdersId",
                         column: x => x.OrdersId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -201,8 +201,8 @@ namespace DB.Migrations
                 values: new object[] { 1, true, "1", "voinore1" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookOrders_OrdersId",
-                table: "BookOrders",
+                name: "IX_BookOrder_OrdersId",
+                table: "BookOrder",
                 column: "OrdersId");
 
             migrationBuilder.CreateIndex(
@@ -240,7 +240,7 @@ namespace DB.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookOrders");
+                name: "BookOrder");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

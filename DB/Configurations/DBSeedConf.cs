@@ -7,13 +7,13 @@ namespace Exam.Data.Configurations
     {
         public static void seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Genres>().HasData(new Genres[]
+            modelBuilder.Entity<Genre>().HasData(new Genre[]
             {
-                new Genres() {Id = 1, Name = "Fantasy"},
-                new Genres() {Id = 2, Name = "Science Fiction"},
-                new Genres() {Id = 3, Name = "Adventure"},
-                new Genres() {Id = 4, Name = "Romance"},
-                new Genres() {Id = 5, Name = "Thriller"}
+                new Genre() {Id = 1, Name = "Fantasy"},
+                new Genre() {Id = 2, Name = "Science Fiction"},
+                new Genre() {Id = 3, Name = "Adventure"},
+                new Genre() {Id = 4, Name = "Romance"},
+                new Genre() {Id = 5, Name = "Thriller"}
             });
             modelBuilder.Entity<User>().HasData(new User() { Id = 1, Username = "voinore1", Password = "1", IsAdmin = true });
         }

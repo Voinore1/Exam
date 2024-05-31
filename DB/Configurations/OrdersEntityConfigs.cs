@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Exam.Data.Configurations
 {
-    internal class OrdersEntityConfigs : IEntityTypeConfiguration<Orders>
+    internal class OrdersEntityConfigs : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Orders> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.Ignore(x => x.TotalPrice);
             builder.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now.Date);

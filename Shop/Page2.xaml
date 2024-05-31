@@ -14,7 +14,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" ItemsSource="{Binding myOrderedBooks}">
+        <ListBox Grid.Row="0" ItemsSource="{Binding myOrderedBooks}" SelectedItem="{Binding SelOrderedBook}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -30,10 +30,11 @@
 
                         <TextBlock Grid.Column="0" Grid.Row="0" Margin="1" FontWeight="Bold" Text="{Binding Title}"/>
                         <TextBlock Grid.Column="1" Grid.Row="0" Margin="1" Text="{Binding MyReview.RatingStr}"/>
-                        <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MyReview.Reviews}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MyReview.Text}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Command="{Binding ChangeReview}" Grid.Row="1">Change review</Button>
     </Grid>
 </Page>

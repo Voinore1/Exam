@@ -1,24 +1,28 @@
 ﻿using Exam.Data;
 using Exam.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Windows;
 
 namespace Shop
 {
     [AddINotifyPropertyChangedInterface]
     public class ViewModel
     {
+        private Window3 window3;
         private BookShopDB bookDB = new BookShopDB();
         private ObservableCollection<Book> books;
-        private ObservableCollection<Orders> myOrders;
+        private ObservableCollection<Order> myOrders;
         private ObservableCollection<Book> orderedBooks = new();
         private ObservableCollection<Review> myReviews;
 
         private User u;
-        
 
+        private RelayCommand acceptChanges;
+        private RelayCommand changeReview;
         private RelayCommand addBook;
         private RelayCommand showReview;
         private RelayCommand cancelOrder;
@@ -41,7 +45,7 @@ namespace Shop
                 .ToList()
                 );
 
-            myOrders = new ObservableCollection<Orders>(bookDB.Orders
+            myOrders = new ObservableCollection<Order>(bookDB.Orders
                 .Where(x=>x.UserId == u.Id)
                 .Include(x=>x.Books)
                 .ToList()
@@ -54,6 +58,9 @@ namespace Shop
             showReview = new RelayCommand((o) => showReviews(), (o) => SelBook != null);
             cancelOrder = new RelayCommand((o) => clearOrder(), (o) => orderedBooks.Any());
             acceptOrder = new RelayCommand((o) => acceptOrders(), (o) => orderedBooks.Any());
+            changeReview = new RelayCommand((o) => _changeReview(), (O) => SelOrderedBook != null);
+            acceptChanges = new RelayCommand((o) => _acceptChanges(), (o) => true);
+            
         }
 
         public ICollection<Book> Books => books;
@@ -76,8 +83,8 @@ namespace Shop
                             {
                                 r = new Review()
                                 {
-                                    Id = 1,
-                                    Reviews = "no review",
+                                    Id = 0,
+                                    Text = "no review",
                                     Book = book,
                                     BookId = book.Id,
                                     Rating = null,
@@ -101,11 +108,12 @@ namespace Shop
             }
         }
         public Book SelBook { get; set; }
+        public Book SelOrderedBook { get; set; }
         public string TotalCost
         {
             get
             {
-                return orderedBooks.Count == 0 ? "Total price: $0" : $"Total price: ${OrderedBooks.Sum(x=>x.Price)}";
+                return orderedBooks.Count == 0 ? "Total price: $0" : $"Total price: ${orderedBooks.Sum(x=>x.Price)}";
             } 
         }
         
@@ -114,6 +122,8 @@ namespace Shop
         public RelayCommand AddToOrderBook => addBook;
         public RelayCommand ShowReviews => showReview;
         public RelayCommand AcceptOrder => acceptOrder;
+        public RelayCommand ChangeReview => changeReview;
+        public RelayCommand AcceptChanges => acceptChanges;
 
         #region SelectedBookBindings
         public string SelBookPublished
@@ -166,7 +176,7 @@ namespace Shop
             {
                 item.Stock -= 1;
             }
-            Orders o = new Orders() { Books = orderedBooks, UserId = u.Id };
+            Order o = new Order() { Books = orderedBooks, UserId = u.Id};
             bookDB.Orders.Add(o);
             
             bookDB.SaveChanges();
@@ -185,6 +195,58 @@ namespace Shop
         public void addToOrderBook()
         {
             orderedBooks.Add(SelBook);
+        }
+        public void _changeReview()
+        {
+            window3 = new Window3(this);
+            window3.Show();
+            
+        }
+        public async void _acceptChanges()
+        {
+            Review r;
+            if(SelOrderedBook.MyReview.Rating == null || SelOrderedBook.MyReview.Text.IsNullOrEmpty())
+            {
+                MessageBox.Show("Make some changes!");
+                return;
+            }
+
+            if(SelOrderedBook.MyReview.Id == 0)
+            {
+                r = new Review()
+                {
+                    Book = SelOrderedBook,
+                    BookId = SelOrderedBook.Id,
+                    Rating = SelOrderedBook.MyReview.Rating,
+                    UserId = u.Id,
+                    Text = SelOrderedBook.MyReview.Text
+                };
+                bookDB.Reviews.Add(r);
+                await bookDB.SaveChangesAsync();
+                window3.Close();
+                return;
+            }
+            else
+            {
+                Review r2;
+                r = bookDB.Reviews.Where(x => x.Id == SelOrderedBook.MyReview.Id).First();
+                bookDB.Reviews.Remove(r);
+                r2 = new Review()
+                {
+                    Book = SelOrderedBook,
+                    BookId = SelOrderedBook.Id,
+                    Rating = SelOrderedBook.MyReview.Rating,
+                    UserId = u.Id,
+                    Text = SelOrderedBook.MyReview.Text
+                };
+                bookDB.Reviews.Add(r2);
+                await bookDB.SaveChangesAsync();
+                //window3.Close();
+                return;
+            }
+            
+
+
         }
 
     }

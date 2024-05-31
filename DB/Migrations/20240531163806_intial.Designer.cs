@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(BookShopDB))]
-    [Migration("20240427191644_1")]
-    partial class _1
+    [Migration("20240531163806_intial")]
+    partial class Intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace DB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookOrders", b =>
+            modelBuilder.Entity("BookOrder", b =>
                 {
                     b.Property<int>("BooksId")
                         .HasColumnType("int");
@@ -37,7 +37,7 @@ namespace DB.Migrations
 
                     b.HasIndex("OrdersId");
 
-                    b.ToTable("BookOrders");
+                    b.ToTable("BookOrder");
                 });
 
             modelBuilder.Entity("Exam.Data.Entities.Author", b =>
@@ -112,7 +112,7 @@ namespace DB.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,7 +158,7 @@ namespace DB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace DB.Migrations
                     b.Property<DateTime>("OrderDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 4, 27, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -211,10 +211,10 @@ namespace DB.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("Reviews")
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -230,7 +230,7 @@ namespace DB.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -267,7 +267,7 @@ namespace DB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BookOrders", b =>
+            modelBuilder.Entity("BookOrder", b =>
                 {
                     b.HasOne("Exam.Data.Entities.Book", null)
                         .WithMany()
@@ -275,7 +275,7 @@ namespace DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Data.Entities.Orders", null)
+                    b.HasOne("Exam.Data.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -290,7 +290,7 @@ namespace DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Data.Entities.Genres", "Genre")
+                    b.HasOne("Exam.Data.Entities.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -309,9 +309,9 @@ namespace DB.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Orders", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Order", b =>
                 {
-                    b.HasOne("Exam.Data.Entities.Users", "User")
+                    b.HasOne("Exam.Data.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,7 +328,7 @@ namespace DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Exam.Data.Entities.Users", "User")
+                    b.HasOne("Exam.Data.Entities.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,7 +349,7 @@ namespace DB.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Genres", b =>
+            modelBuilder.Entity("Exam.Data.Entities.Genre", b =>
                 {
                     b.Navigation("Books");
                 });
@@ -359,7 +359,7 @@ namespace DB.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Exam.Data.Entities.Users", b =>
+            modelBuilder.Entity("Exam.Data.Entities.User", b =>
                 {
                     b.Navigation("Orders");
 

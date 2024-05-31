@@ -13,7 +13,7 @@ namespace Exam.Data.Entities
 
         ///////////////////////////////////////
 
-        public ICollection<Orders>? Orders { get; set; }
+        public ICollection<Order>? Orders { get; set; }
         public ICollection<Review>? Reviews { get; set; }
 
     }

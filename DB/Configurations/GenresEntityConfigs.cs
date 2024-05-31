@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Exam.Data.Configurations
 {
-    internal class GenresEntityConfigs : IEntityTypeConfiguration<Genres>
+    internal class GenresEntityConfigs : IEntityTypeConfiguration<Genre>
     {
-        public void Configure(EntityTypeBuilder<Genres> builder)
+        public void Configure(EntityTypeBuilder<Genre> builder)
         {
             builder.HasAlternateKey(x => x.Name);
         }

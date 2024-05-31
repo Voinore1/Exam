@@ -24,9 +24,9 @@
         <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Height="26" Grid.RowSpan="2" Width="66" >Username:</Label>
         <TextBox x:Name="Username_TB" Grid.Row="1" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.RowSpan="2"></TextBox>
         <Button x:Name="ChangeBtn" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Gray" Content="Doesn't have account?" BorderThickness="0" Background="Transparent" Click="Change1_Click"></Button>
-
+        
         <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Height="26" Grid.RowSpan="2" Width="66" >Password:</Label>
-        <TextBox x:Name="Password_TB" Grid.Row="2" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.RowSpan="2"></TextBox>
+        <PasswordBox PasswordChar="*" x:Name="Password_TB" Grid.Row="2" Grid.Column="1" Height="20" VerticalAlignment="Top" Grid.RowSpan="2"></PasswordBox>
         <TextBlock x:Name="Error_TB" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red"></TextBlock>
         <Button x:Name="LogRegBtn" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Background="LightSlateGray" Margin="5" Click="Login_Click">Login</Button>
 
