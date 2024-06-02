@@ -6,12 +6,44 @@ using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace Shop
 {
     [AddINotifyPropertyChangedInterface]
     public class ViewModel
     {
+        #region AdminProps
+
+        private ObservableCollection<User> _users;
+        private ObservableCollection<Book> _books;
+        private ObservableCollection<Review> _reviews;
+        private ObservableCollection<Author> _authors;
+        private ObservableCollection<Genre> _genres;
+        private ObservableCollection<Order> _orders;
+        private ObservableCollection<Publisher> _publishers;
+
+        public ICollection<Book> _Books => _books;
+        public ICollection<User> _Users => _users;
+        public ICollection<Review> _Reviews => _reviews;
+        public ICollection<Author> _Author => _authors;
+        public ICollection<Genre> _Genres => _genres;
+        public ICollection<Order> _Orders => _orders;
+        public ICollection<Publisher> _Publishers => _publishers;
+
+        private void InitializeAdminProps()
+        {
+            _books = new ObservableCollection<Book>(bookDB.Books.ToList());
+            _users = new ObservableCollection<User>(bookDB.Users.ToList());
+            _reviews = new ObservableCollection<Review>(bookDB.Reviews.ToList());
+            _authors = new ObservableCollection<Author>(bookDB.Authors.ToList());
+            _genres = new ObservableCollection<Genre>(bookDB.Genres.ToList());
+            _orders = new ObservableCollection<Order>(bookDB.Orders.ToList());
+            _publishers = new ObservableCollection<Publisher>(bookDB.Publishers.ToList());
+            
+        }
+        #endregion
+
         private Window3 window3;
         private BookShopDB bookDB = new BookShopDB();
         private ObservableCollection<Book> books;
@@ -32,13 +64,15 @@ namespace Shop
         {
             this.u = u;
 
-            books = new ObservableCollection<Book>( bookDB.Books
+            InitializeAdminProps();
+
+            books = new ObservableCollection<Book>(bookDB.Books
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Genre)
                 .Include(x => x.Reviews)
                 .ToList());
-
+            
             myReviews = new ObservableCollection<Review>( bookDB.Reviews
                 .Where(x => x.UserId == u.Id)
                 .Include(x => x.Book)
@@ -113,10 +147,28 @@ namespace Shop
         {
             get
             {
-                return orderedBooks.Count == 0 ? "Total price: $0" : $"Total price: ${orderedBooks.Sum(x=>x.Price)}";
+                if (orderedBooks.Count == 0) { return "Total price: $0"; }
+                else
+                {
+                    decimal s = 0;
+                    foreach (var book in orderedBooks)
+                    {
+                        s += book.Price;
+                    }
+                    return s.ToString();
+
+                } //return orderedBooks.Count == 0 ? "Total price: $0" : $"Total price: ${orderedBooks.Sum(x=>x.Price)}";
             } 
         }
-        
+        public string AdminBtnStr
+        {
+            get 
+            {
+               return u.IsAdmin == true ? "DB info" : "";
+            }
+        }
+
+
 
         public RelayCommand CancelOrder => cancelOrder;
         public RelayCommand AddToOrderBook => addBook;
@@ -248,6 +300,7 @@ namespace Shop
 
 
         }
+
 
     }
 

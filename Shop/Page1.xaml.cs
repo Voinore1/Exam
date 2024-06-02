@@ -23,12 +23,10 @@ namespace Shop
     public partial class Page1 : Page
     {
         ViewModel vm;
-        Exam.Data.Entities.User u;
-        public Page1(Exam.Data.Entities.User u)
+        public Page1(ViewModel viewModel)
         {   
-            this.u = u;
             InitializeComponent();
-            vm = new ViewModel(u);
+            vm = viewModel;
             this.DataContext = vm;
         }
 

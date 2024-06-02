@@ -14,7 +14,6 @@ namespace Shop
         }
 
         private BookShopDB bookShopDB = new();
-        private MyUser user = new();
 
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -23,10 +22,8 @@ namespace Shop
             if (u == null || u.Password != Password_TB.Password) { Error_TB.Text = "Password or username are incorect!"; }
             else
             {
-                user.username = u.Username;
-                user.password = u.Password;
                 Error_TB.Text = "";
-                Window1 w = new((Exam.Data.Entities.User)u);
+                Window1 w = new(u);
                 w.Show();
                 this.Close();
             }
@@ -44,10 +41,8 @@ namespace Shop
                 MessageBox.Show("This username is used");
                 return;
             }
-                user.username = u.Username;
-                user.password = u.Password;
                 Error_TB.Text = "";
-            Window1 w = new((Exam.Data.Entities.User)u);
+            Window1 w = new(u);
                 w.Show();
                 this.Close();
             
@@ -77,10 +72,4 @@ namespace Shop
         }
     }
 
-    public class MyUser
-    {
-        public string username { get; set; }
-        public string password { get; set; }
-
-    }
 }

@@ -20,23 +20,40 @@ namespace Shop
     /// </summary>
     public partial class Window1 : Window
     {
-        Exam.Data.Entities.User u;
-        public Window1(Exam.Data.Entities.User u)
+        User u;
+        ViewModel ViewModel;
+        public Window1(User u)
         {
             InitializeComponent();
             this.u = u;
+            ViewModel = new ViewModel(u);
+            this.DataContext = ViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Page1 page = new(u);
+            Page1 page = new(ViewModel);
             this.mainFrame.Navigate(page);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Page2 p = new(u);
+            Page2 p = new(ViewModel);
             this.mainFrame.Navigate(p);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Page3 p = new(ViewModel);
+            this.mainFrame.Navigate(p);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+
         }
     }
 }

@@ -5,9 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{2455AD93-81F4-4194-8BCD-0FF376E256FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bookShop", "BookShop\bookShop.csproj", "{28953F43-42C9-4355-8801-618BF9208C56}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop", "Shop\Shop.csproj", "{5B13FE9C-1739-453F-A0D3-29504D93F2F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop", "Shop\Shop.csproj", "{5B13FE9C-1739-453F-A0D3-29504D93F2F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{2455AD93-81F4-4194-8BCD-0FF376E256FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2455AD93-81F4-4194-8BCD-0FF376E256FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2455AD93-81F4-4194-8BCD-0FF376E256FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28953F43-42C9-4355-8801-618BF9208C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28953F43-42C9-4355-8801-618BF9208C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28953F43-42C9-4355-8801-618BF9208C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28953F43-42C9-4355-8801-618BF9208C56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B13FE9C-1739-453F-A0D3-29504D93F2F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B13FE9C-1739-453F-A0D3-29504D93F2F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B13FE9C-1739-453F-A0D3-29504D93F2F3}.Release|Any CPU.ActiveCfg = Release|Any CPU

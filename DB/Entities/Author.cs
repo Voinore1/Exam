@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+using System.ComponentModel;
 
 namespace Exam.Data.Entities
 {
@@ -9,7 +10,7 @@ namespace Exam.Data.Entities
         public string Name { get; set; }
 
         ////////////////////////////
-
+       
         public ICollection<Book>? Books { get; set; }
 
     }
